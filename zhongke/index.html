@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="深圳市中科世纪科技有限公司 - 专业无刷直流水泵、太阳能水泵、汽车电子水泵制造商。16年研发生产经验，ISO9001认证，产品远销全球30+国家。">
+<meta name="keywords" content="无刷直流水泵,汽车电子水泵,太阳能水泵,微型水泵,中科世纪,深圳水泵厂家,液冷循环泵,医疗水泵">
+<title>中科世纪科技 - 无刷直流水泵专业制造商 | 16年品质沉淀</title>
+<style>
+  :root {
+    --blue: #1a56db;
+    --blue-dark: #1e3a5f;
+    --gray: #6b7280;
+    --light: #f8fafc;
+    --white: #ffffff;
+    --accent: #0ea5e9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: #1f2937;
+    line-height: 1.7;
+    background: var(--white);
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+  }
+  nav .container { display: flex; justify-content: space-between; align-items: center; height: 64px; }
+  nav .logo { font-size: 1.3rem; font-weight: 700; color: var(--blue-dark); }
+  nav .logo span { color: var(--blue); }
+  nav .links { display: flex; gap: 2rem; list-style: none; }
+  nav .links a { text-decoration: none; color: #4b5563; font-size: 0.95rem; transition: color 0.2s; }
+  nav .links a:hover { color: var(--blue); }
+
+  /* ===== HERO ===== */
+  .hero {
+    margin-top: 64px; padding: 100px 0 80px;
+    background: linear-gradient(135deg, #1e3a5f 0%, #1a56db 50%, #0ea5e9 100%);
+    color: white; text-align: center;
+  }
+  .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; }
+  .hero h1 span { display: block; color: #93c5fd; font-size: 1.3rem; font-weight: 400; margin-bottom: 0.5rem; }
+  .hero p { font-size: 1.15rem; opacity: 0.85; max-width: 700px; margin: 0 auto 2rem; }
+  .hero .stats { display: flex; justify-content: center; gap: 3rem; margin-top: 2.5rem; }
+  .hero .stat { text-align: center; }
+  .hero .stat .num { font-size: 2.5rem; font-weight: 800; }
+  .hero .stat .label { font-size: 0.9rem; opacity: 0.75; margin-top: 0.25rem; }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 80px 0; }
+  section:nth-child(even) { background: var(--light); }
+  .section-title { text-align: center; margin-bottom: 3rem; }
+  .section-title h2 { font-size: 2rem; color: var(--blue-dark); margin-bottom: 0.5rem; }
+  .section-title p { color: var(--gray); font-size: 1rem; }
+
+  /* ===== ABOUT ===== */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .about-text h3 { font-size: 1.5rem; color: var(--blue-dark); margin-bottom: 1rem; }
+  .about-text p { color: #4b5563; margin-bottom: 0.8rem; }
+  .about-certs { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .cert-badge { background: #eff6ff; color: var(--blue); padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; }
+
+  /* ===== PRODUCTS ===== */
+  .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .product-card {
+    background: white; border-radius: 12px; padding: 2rem; border: 1px solid #e5e7eb;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+  .product-card .icon { font-size: 2.2rem; margin-bottom: 1rem; }
+  .product-card h4 { color: var(--blue-dark); margin-bottom: 0.5rem; }
+  .product-card p { color: #6b7280; font-size: 0.9rem; }
+  .product-card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+  .product-card .tags span { background: #f0f7ff; color: var(--blue); padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; }
+
+  /* ===== APPLICATIONS ===== */
+  .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .app-item {
+    text-align: center; padding: 1.5rem 1rem; background: white;
+    border-radius: 8px; transition: transform 0.2s;
+  }
+  .app-item:hover { transform: scale(1.05); }
+  .app-item .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .app-item .name { font-weight: 600; font-size: 0.9rem; }
+
+  /* ===== CLIENTS ===== */
+  .client-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; align-items: center; }
+  .client-item {
+    padding: 1rem 2rem; background: white; border-radius: 8px;
+    font-weight: 700; color: var(--blue-dark); font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  /* ===== CONTACT ===== */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .contact-info h3 { font-size: 1.4rem; color: var(--blue-dark); margin-bottom: 1rem; }
+  .contact-info .info-row { display: flex; gap: 0.8rem; margin-bottom: 0.6rem; color: #4b5563; }
+  .contact-info .info-row .label { font-weight: 600; min-width: 80px; }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-form input, .contact-form textarea {
+    padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px;
+    font-size: 1rem; font-family: inherit;
+  }
+  .contact-form textarea { height: 120px; resize: vertical; }
+  .contact-form button {
+    background: var(--blue); color: white; border: none; padding: 14px;
+    border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .contact-form button:hover { background: #1e40af; }
+
+  /* ===== FOOTER ===== */
+  footer { background: #111827; color: #9ca3af; padding: 2rem 0; text-align: center; font-size: 0.85rem; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 2rem; }
+    .hero .stats { flex-direction: column; gap: 1.5rem; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; }
+    .product-grid { grid-template-columns: 1fr; }
+    .app-grid { grid-template-columns: repeat(2, 1fr); }
+    nav .links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <div class="logo">中科<span>世纪</span></div>
+    <ul class="links">
+      <li><a href="#about">关于我们</a></li>
+      <li><a href="#products">产品中心</a></li>
+      <li><a href="#applications">应用领域</a></li>
+      <li><a href="#clients">合作客户</a></li>
+      <li><a href="#contact">联系我们</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container">
+    <h1>
+      <span>16 年专注 · 品质如一</span>
+      无刷直流水泵专业制造商
+    </h1>
+    <p>
+      国家高新技术企业，产品远销全球 30+ 国家，服务奇瑞、东风等知名车企，
+      致力于为汽车、医疗、工业、新能源领域提供高性能微型泵解决方案。
+    </p>
+    <div class="stats">
+      <div class="stat"><div class="num">2009</div><div class="label">创立年份</div></div>
+      <div class="stat"><div class="num">300+</div><div class="label">海内外代理商</div></div>
+      <div class="stat"><div class="num">30+</div><div class="label">出口国家</div></div>
+      <div class="stat"><div class="num">ISO9001</div><div class="label">质量认证</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-title"><h2>关于中科世纪</h2><p>Shenzhen Zhongke Century Technology</p></div>
+    <div class="about-grid">
+      <div class="about-text">
+        <h3>无刷直流磁力隔离泵 · 国内技术领先</h3>
+        <p>深圳市中科世纪科技有限公司成立于 2009 年，是一家专业研发、设计、生产<strong>无刷直流微电机、无刷直流水泵、太阳能水泵</strong>的高科技股份制企业。</p>
+        <p>公司依托深圳强大的电子产业基础，采用 Ansys、Matlab 仿真优化设计，严格执行 ISO9001:2015 质量管理体系，拥有多项专利技术。</p>
+        <p>我们是国内首家将微型三相直流磁力隔离泵功率突破 300W 的厂家，产品涵盖 DC 4.5V ~ 24V 全电压系列。</p>
+        <div class="about-certs">
+          <span class="cert-badge">ISO9001:2015 认证</span>
+          <span class="cert-badge">国家高新技术企业</span>
+          <span class="cert-badge">多项专利技术</span>
+          <span class="cert-badge">CE / RoHS 认证</span>
+        </div>
+      </div>
+      <div style="background:#e5e7eb; height:300px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#9ca3af;">
+        工厂实拍 / 生产线图片
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="container">
+    <div class="section-title"><h2>产品中心</h2><p>全系列无刷直流水泵 · 一站式采购</p></div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="icon">🚗</div>
+        <h4>汽车电子水泵</h4>
+        <p>专为汽车循环散热设计，耐高温、低噪音、长寿命，已配套奇瑞、东风、华泰等主机厂。</p>
+        <div class="tags"><span>12V/24V</span><span>耐高温100°C</span><span>静音≤25dB</span></div>
+      </div>
+      <div class="product-card">
+        <div class="icon">🏭</div>
+        <h4>工业循环散热泵</h4>
+        <p>适用于工业设备水循环、冷水机、激光设备散热，最大功率可达 500W，支持变频调速。</p>
+        <div class="tags"><span>高扬程15M</span><span>变频调速</span><span>500W大功率</span></div>
+      </div>
+      <div class="product-card">
+        <div class="icon">☀️</div>
+        <h4>太阳能水泵 / 喷泉</h4>
+        <p>直流低压供电，适配太阳能板，适用于户外喷泉、花园灌溉、水景景观，节能环保。</p>
+        <div class="tags"><span>DC低压</span><span>太阳能直驱</span><span>无刷电机</span></div>
+      </div>
+      <div class="product-card">
+        <div class="icon">🏥</div>
+        <h4>医疗设备水泵</h4>
+        <p>微型精密水泵，流量精准可控，符合医疗设备对卫生、静音、可靠性的严格要求。</p>
+        <div class="tags"><span>微型</span><span>精准控流</span><span>静音</span></div>
+      </div>
+      <div class="product-card">
+        <div class="icon">💻</div>
+        <h4>液冷循环散热泵</h4>
+        <p>针对数据中心、服务器、充电桩等液冷散热场景，提供高效可靠的冷却循环方案。</p>
+        <div class="tags"><span>数据中心</span><span>液冷</span><span>高效散热</span></div>
+      </div>
+      <div class="product-card">
+        <div class="icon">🏠</div>
+        <h4>家电 / 水族水泵</h4>
+        <p>应用于足浴盆、咖啡机、水暖床垫、鱼缸循环、泳池过滤等消费级场景。</p>
+        <div class="tags"><span>低功耗</span><span>超静音</span><span>长寿命</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLICATIONS -->
+<section id="applications">
+  <div class="container">
+    <div class="section-title"><h2>应用领域</h2><p>覆盖汽车、工业、医疗、新能源等核心行业</p></div>
+    <div class="app-grid">
+      <div class="app-item"><div class="icon">🚗</div><div class="name">汽车散热</div></div>
+      <div class="app-item"><div class="icon">🏭</div><div class="name">工业设备</div></div>
+      <div class="app-item"><div class="icon">🏥</div><div class="name">医疗器械</div></div>
+      <div class="app-item"><div class="icon">☀️</div><div class="name">太阳能新能源</div></div>
+      <div class="app-item"><div class="icon">💻</div><div class="name">数据中心液冷</div></div>
+      <div class="app-item"><div class="icon">🏠</div><div class="name">智能家电</div></div>
+      <div class="app-item"><div class="icon">🐟</div><div class="name">水族景观</div></div>
+      <div class="app-item"><div class="icon">⚡</div><div class="name">充电桩散热</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section id="clients">
+  <div class="container">
+    <div class="section-title"><h2>合作客户</h2><p>值得信赖的品牌合作伙伴</p></div>
+    <div class="client-grid">
+      <div class="client-item">奇瑞汽车</div>
+      <div class="client-item">华泰汽车</div>
+      <div class="client-item">东风汽车</div>
+      <div class="client-item">科密集团</div>
+      <div class="client-item">九牧卫浴</div>
+      <div class="client-item">Tropical Marine Centre</div>
+    </div>
+    <p style="text-align:center;margin-top:2rem;color:#6b7280;">
+      全国代理商超 300 家 · 全球 30+ 国家设立总代理 · 产品远销欧美和非洲
+    </p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-title"><h2>联系我们</h2><p>期待与您的合作</p></div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>联系方式</h3>
+        <div class="info-row"><span class="label">地址：</span>深圳市宝安区福海街道大洋路99-2号401（福安工业城三期4栋二层北）</div>
+        <div class="info-row"><span class="label">电话：</span>0755-3313 4584</div>
+        <div class="info-row"><span class="label">网址：</span>www.szzksj.cn</div>
+        <div class="info-row"><span class="label">认证：</span>ISO9001:2015 · CE · RoHS</div>
+        <div class="info-row"><span class="label">规模：</span>深圳总部 · 研发生产一体 · 年产量百万级</div>
+      </div>
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('感谢咨询，我们会尽快回复！');">
+        <input type="text" placeholder="您的姓名 / 公司名称" required>
+        <input type="text" placeholder="联系电话" required>
+        <textarea placeholder="请描述您的需求（产品型号、应用场景、数量等）"></textarea>
+        <button type="submit">提交询盘</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer><div class="container">&copy; 2009-2025 深圳市中科世纪科技有限公司 · 粤ICP备XXXXXXXX号 · 诚信 优质 务实 稳进</div></footer>
+
+</body>
+</html>
