@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI自动化工作流演示</title>
+<style>
+  :root { --blue:#2563eb; --bg:#f8fafc; --card:#fff; --text:#1e293b; --gray:#64748b; --green:#16a34a; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+  .hero { background:linear-gradient(135deg, #1e3a5f, #2563eb); color:#fff; padding:60px 20px; text-align:center; }
+  .hero h1 { font-size:2rem; margin-bottom:8px; }
+  .hero p { opacity:.85; }
+  .container { max-width:900px; margin:0 auto; padding:24px; }
+  .card { background:var(--card); border-radius:12px; padding:28px; margin:20px 0; box-shadow:0 2px 12px rgba(0,0,0,.06); }
+  .card h2 { color:var(--blue); margin-bottom:12px; font-size:1.2rem; border-left:4px solid var(--blue); padding-left:12px; }
+  .card p { color:var(--gray); margin-bottom:12px; font-size:.9rem; }
+  .card a { color:var(--blue); font-weight:600; text-decoration:none; }
+  .card a:hover { text-decoration:underline; }
+  .tag { display:inline-block; padding:2px 10px; border-radius:12px; font-size:.78rem; font-weight:600; margin:2px; }
+  .tag-py { background:#fef3c7; color:#92400e; }
+  .tag-sop { background:#dcfce7; color:#166534; }
+  .tag-prompt { background:#eff6ff; color:#1e40af; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>跨境电商 AI 自动化工作流</h1>
+  <p>竞品监控脚本 · SOP标准流程 · Prompt模板库</p>
+</div>
+<div class="container">
+
+<div class="card">
+  <h2>1. 竞品监控自动化脚本</h2>
+  <p>Python 脚本，每日自动采集竞品价格/排名/评分，对比历史数据标记异常，生成日报并推送告警。可接入 Keepa API 或 Playwright 实现真实数据采集。</p>
+  <span class="tag tag-py">Python</span><span class="tag tag-py">自动化</span><span class="tag tag-py">数据监控</span>
+  <p style="margin-top:12px;"><a href="competitor_monitor.py" target="_blank">查看源码 →</a></p>
+</div>
+
+<div class="card">
+  <h2>2. 跨境运营 AI 工作流 SOP</h2>
+  <p>四大标准工作流手册：竞品调研与选品、Listing 优化、客服话术优化、自动化数据日报。每个流程拆解为标准步骤+检查点+时间估算，新人可直接照着执行。</p>
+  <span class="tag tag-sop">SOP</span><span class="tag tag-sop">流程标准</span><span class="tag tag-sop">团队复用</span>
+  <p style="margin-top:12px;"><a href="跨境运营AI工作流SOP.md" target="_blank">查看文档 →</a></p>
+</div>
+
+<div class="card">
+  <h2>3. AI Prompt 模板库</h2>
+  <p>5 套经实战验证的 Prompt 模板：竞品差评分析、Listing 标题+五点生成、客服回复模板、运营数据周报分析、AI 输出质量自检。替换品类参数即可复用。</p>
+  <span class="tag tag-prompt">Prompt工程</span><span class="tag tag-prompt">模板库</span><span class="tag tag-prompt">可复用</span>
+  <p style="margin-top:12px;"><a href="ai_prompt_templates.md" target="_blank">查看模板 →</a></p>
+</div>
+
+</div>
+</body>
+</html>
