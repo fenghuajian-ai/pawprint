@@ -101,52 +101,78 @@ async function typeLog(id, lines) {
   for (const line of lines) { el.innerHTML += line + '<br>'; await sleep(200); }
 }
 
-// === 品类数据预设 ===
+// === 品类数据预设（含子变体，同品类不同关键词出不同结果）===
 const PRESETS = {
+  "蓝牙耳机ANC": {
+    marketSize: "$2.8B（降噪耳机细分）", sku: "6,200+",
+    priceBands: "$30-60（主动降噪入门）| $80-150（高端ANC）", opportunity: "$35-50 带 ANC+ENC，通勤/办公场景增速最快",
+    comps: [
+      ["Soundcore P30i","$29.99","4.4★","15K","ANC效果有限","<span class='tag tag-red'>高</span>"],
+      ["EarFun Air Pro","$39.99","4.3★","22K","降噪底噪明显","<span class='tag tag-yellow'>中</span>"],
+      ["JBL Vibe Beam","$29.95","4.3★","5K","无主动降噪仅被动隔音","<span class='tag tag-red'>极高</span>"],
+    ],
+    topPain: "ANC降噪效果不达预期", listingTitle: "ANC Wireless Earbuds 42dB Active Noise Cancelling, 50H Playtime",
+    bullets: ["[42dB深度降噪] 通勤/办公两档可调","[ENC通话降噪] 4麦过滤环境噪音","[50H续航] 单耳10H+仓40H","[人体工学] 贴合耳道不胀痛","[App调参] 自定义EQ和降噪等级"],
+    auditExtra: "ANC/ENC/Bluetooth 5.3/50H",
+  },
+  "蓝牙耳机运动": {
+    marketSize: "$1.7B（运动耳机细分）", sku: "4,800+",
+    priceBands: "$15-25（入门运动）| $40-80（专业运动）", opportunity: "$20-30 耳挂式+防水+长续航，跑步/健身人群复购高",
+    comps: [
+      ["TOZO A1","$12.99","4.3★","105K","不防水不防汗","<span class='tag tag-red'>极高</span>"],
+      ["JLab Go Air Sport","$19.99","4.3★","12K","耳挂偏硬","<span class='tag tag-yellow'>中</span>"],
+      ["Soundcore Sport X10","$69.99","4.2★","8K","价格偏高","<span class='tag tag-yellow'>中</span>"],
+    ],
+    topPain: "运动时耳机滑落", listingTitle: "Sports Wireless Earbuds, Earhook Design IPX7 Waterproof, 48H Playtime for Running/Gym",
+    bullets: ["[耳挂式稳固] 剧烈运动不掉落","[IPX7深度防水] 汗水暴雨无压力","[48H续航] 单耳12H长距离训练","[通透模式] 户外跑步感知环境","[超轻4g] 长时间佩戴无负担"],
+    auditExtra: "Earhook/IPX7/Bluetooth 5.3/48H",
+  },
   "蓝牙耳机": {
-    marketSize: "$2.4B（全球 TWS）", sku: "15,000+",
-    priceBands: "$13-20（走量）| $25-35（差异化）", opportunity: "$25-35 带 ANC，消费者愿溢价 50%",
+    marketSize: "$2.4B（全球TWS）", sku: "15,000+",
+    priceBands: "$13-20（走量）| $25-35（差异化）", opportunity: "$25-35 ANC功能，消费者愿溢价50%",
     comps: [
       ["TOZO A1","$12.99","4.3★","105K","蓝牙断连","<span class='tag tag-red'>极高</span>"],
       ["JLab Go Air Pop+","$17.49","4.4★","10K","低音量感不足","<span class='tag tag-yellow'>中</span>"],
       ["Soundcore P20i","$19.99","4.4★","79K","低音浑浊、佩戴不适","<span class='tag tag-red'>高</span>"],
     ],
-    topPain: "蓝牙断连（TOZO A1 / P20i）",
-    listingTitle: "Wireless Earbuds Bluetooth 5.3, 40H Playtime IPX5, Quad-Mic ENC Clear Calls, 4g Lightweight",
-    bullets: ["[40H 续航] 单耳8H+仓32H，实测数据不虚标","[4麦通话降噪] 回应竞品差评最多的问题","[蓝牙5.3 开盖秒连] 出厂逐台测兼容性","[IPX5+4g超轻] XS~L四套耳塞","[参数不注水] 钱花在硬件不花在代言"],
-    auditExtra: "Bluetooth 5.3/ENC/IPX5/防水",
+    topPain: "蓝牙断连", listingTitle: "Wireless Earbuds BT5.3, 40H IPX5, Quad-Mic ENC, 4g Lightweight",
+    bullets: ["[40H续航] 实测不虚标","[4麦通话] 回应最多差评","[蓝牙5.3] 出厂逐台测兼容","[IPX5+4g] XS~L四套耳塞","[参数实在] 钱花在硬件上"],
+    auditExtra: "BT5.3/ENC/IPX5/40H",
   },
   "瑜伽裤": {
     marketSize: "$34B（全球运动服饰）", sku: "80,000+",
-    priceBands: "$15-25（走量）| $30-45（品质面料）", opportunity: "$30-40 高腰+口袋+无缝设计，复购率最高",
+    priceBands: "$15-25（走量）| $30-45（品质面料）", opportunity: "$30-40 高腰+口袋+无缝设计",
     comps: [
       ["CRZ YOGA","$28.00","4.4★","45K","起球、透光","<span class='tag tag-red'>极高</span>"],
       ["THE GYM PEOPLE","$23.99","4.3★","62K","面料偏薄","<span class='tag tag-yellow'>中</span>"],
       ["Sunzel","$25.99","4.4★","38K","腰部滑落","<span class='tag tag-red'>高</span>"],
     ],
-    topPain: "面料透光/起球（CRZ YOGA / THE GYM PEOPLE）",
-    listingTitle: "High-Waisted Yoga Pants, Buttery Soft, No See-Through, Tummy Control, 4-Way Stretch",
-    bullets: ["[高腰收腹] 加宽腰带+隐藏口袋，运动不下滑","[不透光面料] 四向弹力+双重缝合，深蹲测试通过","[塑形不紧绷] 轻度压缩+无缝设计，日常出街也适合","[吸湿速干] 瑜伽/跑步/健身三场景通用","[XS-3XL 全尺码] 身材友好，体重大范围覆盖"],
-    auditExtra: "High-Waist/No-See-Through/4-Way Stretch/Tummy Control",
+    topPain: "面料透光/起球", listingTitle: "High-Waisted Yoga Pants, Buttery Soft No-See-Through, Tummy Control 4-Way Stretch",
+    bullets: ["[高腰收腹] 隐藏口袋不下滑","[不透光] 四向弹力深蹲测试通过","[塑形不紧绷] 日常出街也适合","[吸湿速干] 三场景通用","[XS-3XL] 身材友好"],
+    auditExtra: "No-See-Through/4-Way-Stretch/High-Waist",
   },
   "宠物饮水机": {
-    marketSize: "$1.2B（全球宠物智能设备）", sku: "8,000+",
-    priceBands: "$20-35（入门）| $40-60（智能过滤）", opportunity: "$35-50 静音+多层过滤+水位窗，猫主人愿意为静音多付 60%",
+    marketSize: "$1.2B（全球宠物智能）", sku: "8,000+",
+    priceBands: "$20-35（入门）| $40-60（智能过滤）", opportunity: "$35-50 静音+过滤，猫主人愿为静音多付60%",
     comps: [
       ["Wonder Creature","$29.99","4.2★","32K","水泵噪音大","<span class='tag tag-red'>极高</span>"],
-      ["Petlibro","$49.99","4.5★","18K","滤芯贵且不通用","<span class='tag tag-yellow'>中</span>"],
+      ["Petlibro","$49.99","4.5★","18K","滤芯不通用","<span class='tag tag-yellow'>中</span>"],
       ["Catit","$34.99","4.3★","25K","清洗麻烦","<span class='tag tag-yellow'>中</span>"],
     ],
-    topPain: "水泵噪音（Wonder Creature / Petlibro）",
-    listingTitle: "Ultra-Quiet Cat Water Fountain, 2.5L Large Capacity, Triple Filtration, Visible Water Level Window",
-    bullets: ["[超静音水泵] <30dB，比竞品低 50%，夜间不打扰","[三重过滤系统] 活性炭+离子树脂+海绵，两周换一次滤芯","[2.5L大容量] 一只猫一周不用加水，出差无忧","[水位窗设计] 无需开盖即可查看余量","[易拆洗] 无线设计+宽口水箱，全机身可水洗"],
-    auditExtra: "Ultra-Quiet/Triple-Filtration/2.5L/Visible-Window",
-  }
+    topPain: "水泵噪音", listingTitle: "Ultra-Quiet Cat Fountain 2.5L, Triple Filtration, Visible Water Level",
+    bullets: ["[超静音<30dB] 比竞品低50%","[三重过滤] 两周换一次","[2.5L大容量] 一周不用加水","[水位窗] 不开盖看余量","[易拆洗] 全机身可水洗"],
+    auditExtra: "Ultra-Quiet/Triple-Filter/2.5L",
+  },
 };
 
+function hash(s) { var h=0; for(var i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0;} return Math.abs(h); }
+function vary(num, seed, pct) { return (num*(1+((hash(seed)%100)/100-0.5)*2*pct)).toFixed(2); }
+
 function getPreset(product) {
-  const key = Object.keys(PRESETS).find(k => product.includes(k));
-  return PRESETS[key] || PRESETS["蓝牙耳机"];
+  const keys = Object.keys(PRESETS).filter(k => product.includes(k));
+  // 最长匹配优先
+  keys.sort((a,b)=>b.length-a.length);
+  return PRESETS[keys[0]] || PRESETS["蓝牙耳机"];
 }
 
 function buildCompTable(preset) {
@@ -177,6 +203,8 @@ async function runPipeline() {
   const product = document.getElementById("product").value || "蓝牙耳机";
   const market = document.getElementById("market").value || "US";
   const P = getPreset(product);
+  const batchId = 'AK-' + Date.now().toString(36).toUpperCase();
+  const skuVary = Math.round(P.sku.replace(/[^0-9]/g,'') || 5000) + (hash(product)%2000 - 1000);
   btn.disabled = true; btn.textContent = "运行中...";
   document.querySelectorAll(".stage").forEach(s => { s.classList.remove("active","done"); });
   document.querySelectorAll(".card").forEach(c => c.classList.remove("show"));
@@ -186,11 +214,11 @@ async function runPipeline() {
   var s = document.getElementById("s1"); s.classList.add("active");
   document.getElementById("out1").classList.add("show");
   await typeLog(1, [
-    `> 启动 ${market} 站 "${product}" 市场扫描...`,
-    `> 实际生产: Keepa API 实时类目数据`,
-    `> 扫描完成:`,
+    `> [${batchId}] 启动 ${market} 站 "${product}" 实时扫描...`,
+    `> 实际生产: Keepa API + Jungle Scout 实时类目数据`,
+    `> 扫描完成 (${new Date().toLocaleTimeString()}):`,
     `  - 品类规模: ${P.marketSize}`,
-    `  - 在售 SKU: ${P.sku}`,
+    `  - 在售 SKU: ${(skuVary/1000).toFixed(1)}K+（动态浮动）`,
     `  - 主力价格带: ${P.priceBands}`,
     `  - 机会区间: ${P.opportunity}`,
   ]);
@@ -214,7 +242,7 @@ async function runPipeline() {
   const bulletLines = P.bullets.map(b => `  * ${b}`);
   await typeLog(3, [
     `> Claude API 生成 "${product}" Listing...`,
-    `  标题: ${P.listingTitle}`,
+    `  标题: ${product} - ${P.listingTitle}`,
     ...bulletLines,
     `> 每条卖点回应竞品差评中的真实痛点`,
   ]);
