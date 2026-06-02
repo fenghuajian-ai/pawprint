@@ -96,35 +96,74 @@
 
 <script>
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
 async function typeLog(id, lines) {
-  const el = document.getElementById(id);
-  for (const line of lines) {
-    el.innerHTML += line + '<br>';
-    await sleep(200);
-  }
+  const el = document.getElementById("log"+id);
+  for (const line of lines) { el.innerHTML += line + '<br>'; await sleep(200); }
 }
 
-function buildCompTable(product) {
-  const data = [
-    ["TOZO A1","$12.99","4.3★","105K","蓝牙断连、通话不清晰","<span class='tag tag-red'>极高</span>"],
-    ["JLab Go Air Pop+","$17.49","4.4★","10K","低音量感不足","<span class='tag tag-yellow'>中</span>"],
-    ["Soundcore P20i","$19.99","4.4★","79K","低音浑浊、佩戴不适","<span class='tag tag-yellow'>中</span>"],
-  ];
+// === 品类数据预设 ===
+const PRESETS = {
+  "蓝牙耳机": {
+    marketSize: "$2.4B（全球 TWS）", sku: "15,000+",
+    priceBands: "$13-20（走量）| $25-35（差异化）", opportunity: "$25-35 带 ANC，消费者愿溢价 50%",
+    comps: [
+      ["TOZO A1","$12.99","4.3★","105K","蓝牙断连","<span class='tag tag-red'>极高</span>"],
+      ["JLab Go Air Pop+","$17.49","4.4★","10K","低音量感不足","<span class='tag tag-yellow'>中</span>"],
+      ["Soundcore P20i","$19.99","4.4★","79K","低音浑浊、佩戴不适","<span class='tag tag-red'>高</span>"],
+    ],
+    topPain: "蓝牙断连（TOZO A1 / P20i）",
+    listingTitle: "Wireless Earbuds Bluetooth 5.3, 40H Playtime IPX5, Quad-Mic ENC Clear Calls, 4g Lightweight",
+    bullets: ["[40H 续航] 单耳8H+仓32H，实测数据不虚标","[4麦通话降噪] 回应竞品差评最多的问题","[蓝牙5.3 开盖秒连] 出厂逐台测兼容性","[IPX5+4g超轻] XS~L四套耳塞","[参数不注水] 钱花在硬件不花在代言"],
+    auditExtra: "Bluetooth 5.3/ENC/IPX5/防水",
+  },
+  "瑜伽裤": {
+    marketSize: "$34B（全球运动服饰）", sku: "80,000+",
+    priceBands: "$15-25（走量）| $30-45（品质面料）", opportunity: "$30-40 高腰+口袋+无缝设计，复购率最高",
+    comps: [
+      ["CRZ YOGA","$28.00","4.4★","45K","起球、透光","<span class='tag tag-red'>极高</span>"],
+      ["THE GYM PEOPLE","$23.99","4.3★","62K","面料偏薄","<span class='tag tag-yellow'>中</span>"],
+      ["Sunzel","$25.99","4.4★","38K","腰部滑落","<span class='tag tag-red'>高</span>"],
+    ],
+    topPain: "面料透光/起球（CRZ YOGA / THE GYM PEOPLE）",
+    listingTitle: "High-Waisted Yoga Pants, Buttery Soft, No See-Through, Tummy Control, 4-Way Stretch",
+    bullets: ["[高腰收腹] 加宽腰带+隐藏口袋，运动不下滑","[不透光面料] 四向弹力+双重缝合，深蹲测试通过","[塑形不紧绷] 轻度压缩+无缝设计，日常出街也适合","[吸湿速干] 瑜伽/跑步/健身三场景通用","[XS-3XL 全尺码] 身材友好，体重大范围覆盖"],
+    auditExtra: "High-Waist/No-See-Through/4-Way Stretch/Tummy Control",
+  },
+  "宠物饮水机": {
+    marketSize: "$1.2B（全球宠物智能设备）", sku: "8,000+",
+    priceBands: "$20-35（入门）| $40-60（智能过滤）", opportunity: "$35-50 静音+多层过滤+水位窗，猫主人愿意为静音多付 60%",
+    comps: [
+      ["Wonder Creature","$29.99","4.2★","32K","水泵噪音大","<span class='tag tag-red'>极高</span>"],
+      ["Petlibro","$49.99","4.5★","18K","滤芯贵且不通用","<span class='tag tag-yellow'>中</span>"],
+      ["Catit","$34.99","4.3★","25K","清洗麻烦","<span class='tag tag-yellow'>中</span>"],
+    ],
+    topPain: "水泵噪音（Wonder Creature / Petlibro）",
+    listingTitle: "Ultra-Quiet Cat Water Fountain, 2.5L Large Capacity, Triple Filtration, Visible Water Level Window",
+    bullets: ["[超静音水泵] <30dB，比竞品低 50%，夜间不打扰","[三重过滤系统] 活性炭+离子树脂+海绵，两周换一次滤芯","[2.5L大容量] 一只猫一周不用加水，出差无忧","[水位窗设计] 无需开盖即可查看余量","[易拆洗] 无线设计+宽口水箱，全机身可水洗"],
+    auditExtra: "Ultra-Quiet/Triple-Filtration/2.5L/Visible-Window",
+  }
+};
+
+function getPreset(product) {
+  const key = Object.keys(PRESETS).find(k => product.includes(k));
+  return PRESETS[key] || PRESETS["蓝牙耳机"];
+}
+
+function buildCompTable(preset) {
   const table = document.getElementById("compTable");
   table.innerHTML = "<tr><th>竞品</th><th>价格</th><th>评分</th><th>评论数</th><th>Top 投诉</th><th>关注度</th></tr>";
-  for (const d of data) {
+  for (const d of preset.comps) {
     table.innerHTML += `<tr><td>${d[0]}</td><td>${d[1]}</td><td>${d[2]}</td><td>${d[3]}</td><td>${d[4]}</td><td>${d[5]}</td></tr>`;
   }
 }
 
-function buildAuditTable() {
+function buildAuditTable(preset) {
   const checks = [
-    ["关键词密度","✓","PASS","Bluetooth 5.3/ENC/IPX5/防水 已覆盖"],
+    ["关键词密度","✓","PASS",preset.auditExtra + " 已覆盖"],
     ["FTC 合规","✓","PASS","无 Best/#1 等最高级虚假宣称"],
-    ["差评回应","✓","PASS","断连、通话、续航、佩戴 四个痛点均有回应"],
-    ["文化敏感度","✓","PASS","US 站用语已检查，无文化踩雷风险"],
-    ["可执行性","✓","PASS","每条卖点有具体参数，非堆砌功能"],
+    ["差评回应","✓","PASS","核心痛点均有针对性回应"],
+    ["文化敏感度","✓","PASS","US 站用语已检查"],
+    ["可执行性","✓","PASS","每条卖点有具体参数"],
   ];
   const table = document.getElementById("auditTable");
   table.innerHTML = "<tr><th>检查项</th><th>结果</th><th>状态</th><th>备注</th></tr>";
@@ -137,83 +176,67 @@ async function runPipeline() {
   const btn = document.getElementById("runBtn");
   const product = document.getElementById("product").value || "蓝牙耳机";
   const market = document.getElementById("market").value || "US";
-  btn.disabled = true;
-  btn.textContent = "运行中...";
-
-  // Reset
+  const P = getPreset(product);
+  btn.disabled = true; btn.textContent = "运行中...";
   document.querySelectorAll(".stage").forEach(s => { s.classList.remove("active","done"); });
   document.querySelectorAll(".card").forEach(c => c.classList.remove("show"));
-  document.querySelectorAll(".log").forEach(l => l.innerHTML = "");
+  for(let i=1;i<=5;i++){ var el=document.getElementById("log"+i); if(el)el.innerHTML=""; }
 
   // Stage 1
-  const s1 = document.getElementById("s1");
-  s1.classList.add("active");
+  var s = document.getElementById("s1"); s.classList.add("active");
   document.getElementById("out1").classList.add("show");
-  await typeLog("log1", [
-    `> 启动 ${market} 站 ${product} 市场扫描...`,
-    `> 实际生产：调用 Keepa API 获取实时类目数据`,
-    `> 扫描完成：`,
-    `  - 品类规模: 约 $2.4B（全球 TWS 市场）`,
-    `  - 在售 SKU: 15,000+`,
-    `  - 主力价格带: $13-20（走量）| $25-35（差异化）`,
-    `  - 机会区间: $25-35 带 ANC 功能，消费者愿溢价 50%`,
+  await typeLog(1, [
+    `> 启动 ${market} 站 "${product}" 市场扫描...`,
+    `> 实际生产: Keepa API 实时类目数据`,
+    `> 扫描完成:`,
+    `  - 品类规模: ${P.marketSize}`,
+    `  - 在售 SKU: ${P.sku}`,
+    `  - 主力价格带: ${P.priceBands}`,
+    `  - 机会区间: ${P.opportunity}`,
   ]);
-  await sleep(800);
-  s1.classList.remove("active"); s1.classList.add("done");
+  await sleep(800); s.classList.replace("active","done");
 
   // Stage 2
-  await sleep(500);
-  const s2 = document.getElementById("s2");
-  s2.classList.add("active");
+  await sleep(500); s = document.getElementById("s2"); s.classList.add("active");
   document.getElementById("out2").classList.add("show");
-  buildCompTable(product);
-  await typeLog("log2", [
-    `> Playwright 自动打开 4 个竞品页面...`,
-    `> 抓取价格、评分、评论数完成`,
-    `> Claude API 批量分析差评 → 5 个高频痛点已归类`,
-    `> 最高频: 蓝牙断连（涉及 TOZO A1 / P20i）`,
+  buildCompTable(P);
+  await typeLog(2, [
+    `> Playwright 自动打开 ${P.comps.length} 个竞品页面...`,
+    `> 抓取价格/评分/评论数完成`,
+    `> Claude API 批量分类差评 -> 5个高频痛点`,
+    `> 最高频: ${P.topPain}`,
   ]);
-  await sleep(800);
-  s2.classList.remove("active"); s2.classList.add("done");
+  await sleep(800); s.classList.replace("active","done");
 
   // Stage 3
-  await sleep(500);
-  const s3 = document.getElementById("s3");
-  s3.classList.add("active");
+  await sleep(500); s = document.getElementById("s3"); s.classList.add("active");
   document.getElementById("out3").classList.add("show");
-  await typeLog("log3", [
-    `> Claude API 生成 ${product} Listing...`,
-    `  标题: ${product} Bluetooth 5.3, 40H Playtime IPX5, Quad-Mic ENC for Clear Calls`,
-    `  五点: [续航] [通话质量] [蓝牙稳定] [防水+舒适] [参数不注水]`,
-    `> 每条卖点均回应了竞品差评中的真实痛点`,
+  const bulletLines = P.bullets.map(b => `  * ${b}`);
+  await typeLog(3, [
+    `> Claude API 生成 "${product}" Listing...`,
+    `  标题: ${P.listingTitle}`,
+    ...bulletLines,
+    `> 每条卖点回应竞品差评中的真实痛点`,
   ]);
-  buildAuditTable();
-  await sleep(800);
-  s3.classList.remove("active"); s3.classList.add("done");
+  buildAuditTable(P);
+  await sleep(800); s.classList.replace("active","done");
 
   // Stage 4
-  await sleep(500);
-  const s4 = document.getElementById("s4");
-  s4.classList.add("active");
+  await sleep(500); s = document.getElementById("s4"); s.classList.add("active");
   document.getElementById("out4").classList.add("show");
-  await typeLog("log4", [
-    `> 配置竞品监控告警规则:`,
-    `  - 降价 >15% → 飞书实时推送`,
-    `  - 新增一星差评 >2 条 → 当天分析原因`,
-    `  - 评分下降 >0.3 → 3h 内复查`,
-    `  - BSR 下降 >50 位 → 标记关注`,
-    `> 每日 09:00 自动运行，异常实时告警`,
-    `> 监控已部署，永久自动运行`,
+  await typeLog(4, [
+    `> 部署 "${product}" 竞品监控:`,
+    `  - 降价 >15% -> 飞书实时推送`,
+    `  - 新增一星差评 >2条 -> 当天分析`,
+    `  - 评分下降 >0.3 -> 3h内复查`,
+    `  - BSR 下降 >50位 -> 标记关注`,
+    `> 每日 09:00 自动运行，监控永久在线`,
   ]);
-  await sleep(800);
-  s4.classList.remove("active"); s4.classList.add("done");
+  await sleep(800); s.classList.replace("active","done");
 
-  // Summary
   await sleep(500);
   document.getElementById("outSummary").classList.add("show");
-
-  btn.disabled = false;
-  btn.textContent = "启动全流程";
+  btn.disabled = false; btn.textContent = "启动全流程";
 }
 </script>
 </body>
