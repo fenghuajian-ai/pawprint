@@ -231,8 +231,6 @@ async function runPipeline() {
   const product = document.getElementById("product").value || "蓝牙耳机";
   const market = document.getElementById("market").value || "US";
   const P = getPreset(product);
-  const batchId = 'AK-' + Date.now().toString(36).toUpperCase();
-  const skuVary = Math.round(P.sku.replace(/[^0-9]/g,'') || 5000) + (hash(product)%2000 - 1000);
   btn.disabled = true; btn.textContent = "运行中...";
   document.querySelectorAll(".stage").forEach(s => { s.classList.remove("active","done"); });
   document.querySelectorAll(".card").forEach(c => c.classList.remove("show"));
