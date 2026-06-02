@@ -51,8 +51,7 @@
 </div>
 
 <div class="input-row">
-  <input id="product" value="蓝牙耳机" placeholder="品类名称">
-  <input id="market" value="US" placeholder="目标市场" style="width:100px">
+  <input id="product" value="" placeholder="输入品类关键词，如：蓝牙耳机" style="width:280px">
   <button id="runBtn" onclick="runPipeline()">启动全流程</button>
 </div>
 
@@ -312,8 +311,7 @@ function buildAuditTable(preset) {
 
 async function runPipeline() {
   const btn = document.getElementById("runBtn");
-  const product = document.getElementById("product").value || "蓝牙耳机";
-  const market = document.getElementById("market").value || "US";
+  const product = document.getElementById("product").value.trim() || "蓝牙耳机";
   const P = getPreset(product);
   btn.disabled = true; btn.textContent = "运行中...";
   document.querySelectorAll(".stage").forEach(s => { s.classList.remove("active","done"); });
@@ -324,7 +322,7 @@ async function runPipeline() {
   var s = document.getElementById("s1"); s.classList.add("active");
   document.getElementById("out1").classList.add("show");
   await typeLog(1, [
-    `> [${P.snapshotId}] 启动 ${market} 站 "${product}" 实时扫描...`,
+    `> [${P.snapshotId}] 启动 "${product}" Amazon US 实时扫描...`,
     `> 数据快照时间: ${P.snapshotTime}`,
     `> 实际生产: Keepa API + Jungle Scout 实时类目数据`,
     `> 扫描完成:`,
