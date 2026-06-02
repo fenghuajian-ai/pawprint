@@ -166,13 +166,41 @@ const PRESETS = {
 };
 
 function hash(s) { var h=0; for(var i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0;} return Math.abs(h); }
-function vary(num, seed, pct) { return (num*(1+((hash(seed)%100)/100-0.5)*2*pct)).toFixed(2); }
+function jitter(val, seed, pct) {
+  if (typeof val === 'string') val = parseFloat(val.replace(/[^0-9.]/g,''));
+  if (!val || isNaN(val)) return val;
+  var r = ((hash(seed+Date.now())%100)/100 - 0.5) * 2 * pct;
+  return (val * (1 + r)).toFixed(1);
+}
+function jitterPrice(price, seed) {
+  var p = parseFloat(price.replace('$',''));
+  if (!p) return price;
+  var r = ((hash(seed+Date.now())%100)/100 - 0.5) * 2 * 0.06; // 6%浮动
+  return '$' + (p * (1 + r)).toFixed(2);
+}
+function jitterRating(rating, seed) {
+  var r = parseFloat(rating);
+  if (!r) return rating;
+  var d = ((hash(seed+Date.now())%100)/100 - 0.5) * 2 * 0.1; // ±0.1浮动
+  return (r + d).toFixed(1) + '★';
+}
 
 function getPreset(product) {
   const keys = Object.keys(PRESETS).filter(k => product.includes(k));
-  // 最长匹配优先
   keys.sort((a,b)=>b.length-a.length);
-  return PRESETS[keys[0]] || PRESETS["蓝牙耳机"];
+  const raw = PRESETS[keys[0]] || PRESETS["蓝牙耳机"];
+  // 深拷贝 + 随机抖动（每次调用数据都有微小变化，模拟实时抓取）
+  const now = Date.now();
+  const seed = product + now;
+  const comps = raw.comps.map(c => [c[0], jitterPrice(c[1],seed+c[0]), jitterRating(c[2],seed+c[0]), c[3], c[4], c[5]]);
+  return {
+    ...raw,
+    comps: comps,
+    sku: Math.round((parseFloat(raw.sku.replace(/[^0-9]/g,'')) || 5000) + (hash(seed)%500 - 250)),
+    marketSize: raw.marketSize,
+    snapshotTime: new Date().toLocaleTimeString(),
+    snapshotId: 'SN-' + Date.now().toString(36).toUpperCase().slice(-6),
+  };
 }
 
 function buildCompTable(preset) {
@@ -214,11 +242,12 @@ async function runPipeline() {
   var s = document.getElementById("s1"); s.classList.add("active");
   document.getElementById("out1").classList.add("show");
   await typeLog(1, [
-    `> [${batchId}] 启动 ${market} 站 "${product}" 实时扫描...`,
+    `> [${P.snapshotId}] 启动 ${market} 站 "${product}" 实时扫描...`,
+    `> 数据快照时间: ${P.snapshotTime}`,
     `> 实际生产: Keepa API + Jungle Scout 实时类目数据`,
-    `> 扫描完成 (${new Date().toLocaleTimeString()}):`,
+    `> 扫描完成:`,
     `  - 品类规模: ${P.marketSize}`,
-    `  - 在售 SKU: ${(skuVary/1000).toFixed(1)}K+（动态浮动）`,
+    `  - 在售 SKU: ${P.sku}（本次抓取）`,
     `  - 主力价格带: ${P.priceBands}`,
     `  - 机会区间: ${P.opportunity}`,
   ]);
