@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跨境电商 AI 全流程自动化管线</title>
+<style>
+  :root { --blue:#2563eb; --bg:#f8fafc; --card:#fff; --text:#1e293b; --gray:#64748b; --green:#16a34a; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+  .hero { background:linear-gradient(135deg, #0f172a, #1e40af); color:#fff; padding:60px 20px; text-align:center; }
+  .hero h1 { font-size:2rem; margin-bottom:8px; }
+  .hero .flow { font-size:1.1rem; opacity:.85; margin-top:16px; }
+  .hero .flow span { background:rgba(255,255,255,.15); padding:4px 12px; border-radius:6px; margin:0 4px; }
+  .container { max-width:900px; margin:0 auto; padding:24px; }
+  .card { background:var(--card); border-radius:12px; padding:28px; margin:20px 0; box-shadow:0 2px 12px rgba(0,0,0,.06); }
+  .card h2 { color:var(--blue); margin-bottom:12px; font-size:1.15rem; border-left:4px solid var(--blue); padding-left:12px; }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; margin:12px 0; }
+  th { background:#f1f5f9; padding:10px 12px; text-align:left; }
+  td { padding:10px 12px; border-bottom:1px solid #e2e8f0; }
+  .tag { display:inline-block; padding:3px 10px; border-radius:12px; font-size:.75rem; font-weight:600; }
+  .tag-green { background:#dcfce7; color:#166534; }
+  .tag-blue { background:#dbeafe; color:#1e40af; }
+  .highlight { background:#eff6ff; padding:14px; border-radius:8px; margin:12px 0; font-size:.9rem; border-left:3px solid var(--blue); }
+  .checklist { list-style:none; padding:0; }
+  .checklist li { padding:6px 0; font-size:.9rem; }
+  .checklist li::before { content:"✓ "; color:var(--green); font-weight:bold; }
+  a { color:var(--blue); font-weight:600; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>跨境电商 AI 全流程自动化管线</h1>
+  <p>输入品类 → 4 阶段自动运行 → 输出可交付成果</p>
+  <div class="flow">
+    <span>选品扫描</span> → <span>竞品拆解</span> → <span>Listing 生成+审核</span> → <span>监控部署</span>
+  </div>
+</div>
+<div class="container">
+
+<div class="card">
+  <h2>一键运行</h2>
+  <div class="highlight">
+    <code>python auto_pipeline.py --product "蓝牙耳机" --market "US"</code>
+  </div>
+  <p style="margin-top:12px;color:var(--gray);font-size:.9rem;">换成任意品类和站点即可复用：宠物饮水机、瑜伽裤、充电宝...</p>
+</div>
+
+<div class="card">
+  <h2>四个阶段</h2>
+  <table>
+    <tr><th>阶段</th><th>做什么</th><th>实际工具</th><th>耗时</th></tr>
+    <tr><td>1. 市场扫描</td><td>规模、价格带、机会区间</td><td><span class="tag tag-blue">Keepa API</span></td><td>2 min</td></tr>
+    <tr><td>2. 竞品分析</td><td>竞品数据+差评痛点归类</td><td><span class="tag tag-blue">Playwright</span> <span class="tag tag-green">AI 分类</span></td><td>10 min</td></tr>
+    <tr><td>3. Listing 生成+审核</td><td>标题/五点+合规检查</td><td><span class="tag tag-green">Claude API</span></td><td>10 min</td></tr>
+    <tr><td>4. 监控部署</td><td>每日自动+异常告警</td><td><span class="tag tag-blue">Python定时+飞书推送</span></td><td>5 min</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h2>效率提升</h2>
+  <table>
+    <tr><th>对比</th><th>传统方式</th><th>AI 管线</th><th>倍率</th></tr>
+    <tr><td>市场扫描</td><td>手动翻报告 2h</td><td>API+AI 摘要 2min</td><td><strong>60x</strong></td></tr>
+    <tr><td>差评分析</td><td>人工读500条 3h</td><td>AI批量分类 10min</td><td><strong>18x</strong></td></tr>
+    <tr><td>Listing生成</td><td>手写+来回改 2h</td><td>AI生成+审核 10min</td><td><strong>12x</strong></td></tr>
+    <tr><td>日常监控</td><td>每天手动查 1h</td><td>脚本自动+告警 0min</td><td><strong>完全解放</strong></td></tr>
+  </table>
+  <div class="highlight" style="margin-top:16px;">
+    <strong>总量：传统 8 小时 → AI 管线 30 分钟。效率提升 16 倍。</strong>
+  </div>
+</div>
+
+<div class="card">
+  <h2>人工把关——不是放手不管</h2>
+  <ul class="checklist">
+    <li>数据来源核实（AI 可能编数字）</li>
+    <li>FTC/平台合规审查（AI 不知道法律红线）</li>
+    <li>文化敏感性检查（AI 默认西方视角）</li>
+    <li>最终 Listing 终审批复</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>查看源码</h2>
+  <p><a href="auto_pipeline.py" target="_blank">auto_pipeline.py — 全流程脚本源码 →</a></p>
+  <p style="margin-top:8px;"><a href="README.md" target="_blank">README.md — 架构说明 →</a></p>
+</div>
+
+</div>
+</body>
+</html>
