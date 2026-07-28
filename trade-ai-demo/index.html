@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI外贸客户开发平台 — Demo</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Microsoft YaHei',sans-serif;background:#f0f2f5;color:#333;min-height:100vh}
+.header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:24px 32px}
+.header h1{font-size:22px;margin-bottom:4px}
+.header p{font-size:13px;opacity:.7}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+/* 输入区 */
+.input-card{background:#fff;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.input-row{display:flex;gap:12px;align-items:center}
+.input-row input{flex:1;padding:12px 16px;border:2px solid #e0e0e0;border-radius:8px;font-size:15px;outline:none;transition:border .3s}
+.input-row input:focus{border-color:#2563eb}
+.btn{padding:12px 28px;border:none;border-radius:8px;font-size:14px;cursor:pointer;font-weight:600;transition:all .2s;white-space:nowrap}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+/* 进度条 */
+.progress{display:none;margin-top:16px}
+.progress.active{display:block}
+.progress-bar{height:6px;background:#e0e0e0;border-radius:3px;overflow:hidden;margin-bottom:8px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#2563eb,#6366f1);border-radius:3px;transition:width .5s;width:0%}
+.progress-text{font-size:12px;color:#888}
+/* 网格 */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card h3{font-size:14px;color:#666;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card h3 .icon{font-size:18px}
+/* 关键词 */
+.keywords{display:flex;flex-wrap:wrap;gap:6px}
+.keyword{background:#eef2ff;color:#2563eb;padding:4px 12px;border-radius:20px;font-size:12px}
+/* 客户表 */
+.client-row{display:grid;grid-template-columns:1fr 80px 80px;gap:8px;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px;align-items:center}
+.client-row.header{font-weight:600;color:#888;font-size:11px;text-transform:uppercase}
+.score{text-align:center;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.score-A{background:#d4edda;color:#155724}
+.score-B{background:#fff3cd;color:#856404}
+.score-C{background:#f8d7da;color:#721c24}
+/* 邮件预览 */
+.email-box{background:#f8f9fa;border-radius:8px;padding:16px;font-size:13px;line-height:1.8;min-height:60px}
+.email-box .subject{font-weight:600;color:#1a1a2e;margin-bottom:4px}
+.email-box .meta{color:#888;font-size:11px;margin-bottom:8px}
+/* 看板 */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.metric{text-align:center;padding:16px;background:#f8f9fa;border-radius:8px}
+.metric .num{font-size:28px;font-weight:700;color:#2563eb}
+.metric .label{font-size:11px;color:#888;margin-top:4px}
+/* 状态提示 */
+.status{display:none;text-align:center;padding:40px;color:#888}
+.status.active{display:block}
+/* 响应式 */
+@media(max-width:768px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.input-row{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>AI 外贸客户开发平台</h1>
+  <p>AI Search → Filter → Outreach Pipeline | Demo Version</p>
+</div>
+
+<div class="container">
+  <!-- 输入 -->
+  <div class="input-card">
+    <div class="input-row">
+      <input type="text" id="product" placeholder="输入产品关键词，如：electronic cigarette OEM、vape pen wholesale..." value="electronic cigarette OEM">
+      <button class="btn btn-primary" onclick="runPipeline()" id="btnRun">🚀 启动 AI 搜索</button>
+    </div>
+    <div class="progress" id="progress">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">准备中...</div>
+    </div>
+  </div>
+
+  <!-- 默认提示 -->
+  <div class="status active" id="emptyState">👆 输入产品关键词，点击「启动 AI 搜索」查看 AI 客户开发全流程</div>
+
+  <!-- 结果区 -->
+  <div id="results" style="display:none">
+    <div class="grid">
+      <!-- 关键词 -->
+      <div class="card">
+        <h3><span class="icon">🔍</span> AI 搜索关键词矩阵</h3>
+        <div class="keywords" id="keywordsEl"></div>
+      </div>
+
+      <!-- 数据概览 -->
+      <div class="card">
+        <h3><span class="icon">📊</span> 实时搜索概览</h3>
+        <div class="metrics" id="metricsEl"></div>
+      </div>
+    </div>
+
+    <!-- 客户列表 -->
+    <div class="card" style="margin-top:20px">
+      <h3><span class="icon">🎯</span> AI 筛选结果（已打分分级）</h3>
+      <div class="client-row header">
+        <span>客户信息</span><span>意向评分</span><span>分级</span>
+      </div>
+      <div id="clientsEl"></div>
+    </div>
+
+    <!-- 开发信 -->
+    <div class="card" style="margin-top:20px">
+      <h3><span class="icon">✉️</span> AI 自动生成开发信（A 级客户）</h3>
+      <div class="email-box" id="emailEl"></div>
+    </div>
+
+    <!-- 转化漏斗 -->
+    <div class="card" style="margin-top:20px">
+      <h3><span class="icon">📈</span> 转化漏斗（实时）</h3>
+      <div class="metrics">
+        <div class="metric"><div class="num" id="funnel1">—</div><div class="label">搜索线索</div></div>
+        <div class="metric"><div class="num" id="funnel2">—</div><div class="label">AI 筛选通过</div></div>
+        <div class="metric"><div class="num" id="funnel3">—</div><div class="label">已触达</div></div>
+        <div class="metric"><div class="num" id="funnel4">—</div><div class="label">有效询盘</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 模拟数据（实际部署后接入 DeepSeek API）
+const MOCK = true; // true=模拟演示(默认) false=调用DeepSeek API(需填入下方KEY)
+
+const DEEPSEEK_KEY = ''; // 如需真实API演示，在此填入你的DeepSeek Key
+const DEEPSEEK_URL = 'https://api.deepseek.com/v1/chat/completions';
+
+async function callDeepSeek(prompt) {
+  const resp = await fetch(DEEPSEEK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${DEEPSEEK_KEY}` },
+    body: JSON.stringify({
+      model: 'deepseek-chat',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.7, max_tokens: 2000
+    })
+  });
+  const data = await resp.json();
+  return data.choices[0].message.content;
+}
+
+async function runPipeline() {
+  const product = document.getElementById('product').value.trim();
+  if (!product) return;
+
+  document.getElementById('emptyState').classList.remove('active');
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('progress').classList.add('active');
+  document.getElementById('btnRun').disabled = true;
+  const fill = document.getElementById('progressFill');
+  const text = document.getElementById('progressText');
+
+  try {
+    // Step 1: 生成关键词矩阵
+    text.textContent = 'Step 1/4: AI 正在生成多语言搜索关键词矩阵...';
+    fill.style.width = '20%';
+    let keywords;
+    if (MOCK) {
+      await sleep(800);
+      keywords = mockKeywords(product);
+    } else {
+      const kw = await callDeepSeek(`你是外贸客户开发专家。为产品"${product}"生成15个搜索关键词，覆盖：产品词、行业场景词、竞品词、目标市场本地化词。返回JSON数组格式：["kw1","kw2",...]。只返回JSON数组，不要其他内容。`);
+      keywords = JSON.parse(kw.match(/\[.*\]/s)[0]);
+    }
+    renderKeywords(keywords);
+
+    // Step 2: AI 筛选客户
+    text.textContent = 'Step 2/4: AI 正在搜索并筛选潜在客户...';
+    fill.style.width = '45%';
+    let clients;
+    if (MOCK) {
+      await sleep(1000);
+      clients = mockClients(product);
+    } else {
+      const cl = await callDeepSeek(`你是外贸客户开发专家。基于产品"${product}"，生成8个模拟的潜在海外客户信息，每个包含：公司名、国家、公司规模、是否匹配、意向评分(1-100)。\n返回JSON数组：[{"name":"公司名","country":"国家","size":"小型/中型/大型","match":"匹配原因","score":85},...]\n重点：要有高/中/低三种意向等级，A级(80+)2-3个，B级(50-79)2-3个，C级(50以下)2-3个。只返回JSON数组，不要其他内容。`);
+      clients = JSON.parse(cl.match(/\[.*\]/s)[0]);
+    }
+    renderClients(clients);
+
+    // Step 3: 生成开发信
+    text.textContent = 'Step 3/4: AI 正在生成个性化开发信...';
+    fill.style.width = '70%';
+    const aClient = clients.find(c => c.score >= 80) || clients[0];
+    let email;
+    if (MOCK) {
+      await sleep(600);
+      email = mockEmail(aClient, product);
+    } else {
+      email = await callDeepSeek(`你是外贸开发信专家。为以下客户写一封个性化英文开发信：\n客户公司：${aClient.name}\n国家：${aClient.country}\n匹配原因：${aClient.match}\n产品：${product}\n\n要求：\n1. 主题行吸引眼球\n2. 开头提及客户公司的具体情况（不是模板）\n3. 简洁有力，150词以内\n4. 有明确的CTA（call to action）\n5. 语气专业但不生硬\n\n只返回邮件正文，包含Subject: 和正文。`);
+    }
+    renderEmail(email, aClient);
+
+    // Step 4: 更新看板
+    text.textContent = 'Step 4/4: 生成数据看板...';
+    fill.style.width = '95%';
+    updateDashboard(clients);
+    await sleep(400);
+
+    fill.style.width = '100%';
+    text.textContent = '✅ 完成！AI 客户开发全流程演示完毕';
+    setTimeout(() => document.getElementById('progress').classList.remove('active'), 1500);
+  } catch(e) {
+    text.textContent = '⚠ ' + e.message + '（请确保网络正常，DeepSeek API 可访问）';
+    fill.style.background = '#e74c3c';
+    console.error(e);
+  }
+  document.getElementById('btnRun').disabled = false;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function renderKeywords(kws) {
+  document.getElementById('keywordsEl').innerHTML = kws.map(k => `<span class="keyword">${k}</span>`).join('');
+}
+
+function renderClients(clients) {
+  const grade = s => s >= 80 ? 'A' : s >= 50 ? 'B' : 'C';
+  document.getElementById('clientsEl').innerHTML = clients.map(c =>
+    `<div class="client-row"><span>🏢 <strong>${c.name}</strong> · ${c.country} · ${c.size} <br><small style="color:#888">${c.match}</small></span><span class="score score-${grade(c.score)}">${c.score}</span><span class="score score-${grade(c.score)}">${grade(c.score)}级</span></div>`
+  ).join('');
+}
+
+function renderEmail(email, client) {
+  const lines = email.trim().split('\n');
+  const subject = lines[0].replace(/^Subject:\s*/i, '');
+  const body = lines.slice(1).join('\n').trim();
+  document.getElementById('emailEl').innerHTML =
+    `<div class="subject">${subject}</div>
+     <div class="meta">To: ${client.name} (${client.country}) · A级客户 · 自动发送</div>
+     <div style="white-space:pre-wrap">${body}</div>`;
+}
+
+function updateDashboard(clients) {
+  const a = clients.filter(c => c.score >= 80).length;
+  const b = clients.filter(c => c.score >= 50 && c.score < 80).length;
+  document.getElementById('metricsEl').innerHTML =
+    `<div class="metric"><div class="num">${clients.length * 47}</div><div class="label">搜索线索</div></div>
+     <div class="metric"><div class="num">${clients.length}</div><div class="label">AI筛选通过</div></div>
+     <div class="metric"><div class="num">${a}</div><div class="label">A级/高意向</div></div>
+     <div class="metric"><div class="num">${a+b}</div><div class="label">可触达</div></div>`;
+  document.getElementById('funnel1').textContent = clients.length * 47;
+  document.getElementById('funnel2').textContent = clients.length;
+  document.getElementById('funnel3').textContent = a + b;
+  document.getElementById('funnel4').textContent = a;
+}
+
+// Mock 数据（离线演示用）
+function mockKeywords(p) {
+  return [p, p+' manufacturer', p+' wholesale', p+' supplier China', 'best '+p+' factory',
+    p.replace('electronic','vape'), 'disposable '+p, p+' bulk order',
+    p+' OEM', p+' private label', p+' Europe', p+' USA market',
+    'buy '+p+' online', 'wholesale vape products', p+' distributor'];
+}
+function mockClients(p) {
+  return [
+    {name:'VaporTech GmbH',country:'Germany',size:'中型',match:'德国电子烟品牌方，有稳定OEM需求',score:92},
+    {name:'Cloud9 Distribution',country:'USA',size:'大型',match:'美国批发商，月采购量50万支',score:88},
+    {name:'SmokeHouse UK',country:'UK',size:'中型',match:'英国连锁零售，正在找中国OEM',score:85},
+    {name:'EcoVape Ltd',country:'Canada',size:'小型',match:'加拿大创业品牌，首单量小',score:62},
+    {name:'AsianVape Trading',country:'Malaysia',size:'中型',match:'东南亚经销商，主做性价比产品',score:58},
+    {name:'Digital Smoke Inc',country:'Australia',size:'小型',match:'澳洲线上品牌，有合规需求',score:45},
+    {name:'VapeStyle France',country:'France',size:'小型',match:'法国小众品牌，TPD合规需求',score:40},
+    {name:'Random Imports LLC',country:'USA',size:'中型',match:'杂货进口商，非专业电子烟',score:22},
+  ];
+}
+function mockEmail(c, p) {
+  return `Subject: ${c.name} - Premium ${p} Solutions from China's Leading OEM
+
+Dear ${c.name.split(' ')[0]} Team,
+
+I noticed ${c.name} has been expanding in the ${c.country} market — impressive growth trajectory!
+
+We're a specialized ${p} manufacturer with 8 years of OEM experience, serving 20+ brands across Europe and North America. Unlike generic suppliers, we offer:
+
+• Full TPD/FDA compliance documentation included
+• 7-day sampling, 15-day bulk turnaround
+• Dedicated account manager for your brand
+
+Would you be open to a 15-minute call to discuss how we can support your 2026 product roadmap?
+
+Best regards,
+[Your Name]`;
+}
+</script>
+</body>
+</html>
